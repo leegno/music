@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Playlist Player</title>
+<style>
+  body {
+    margin: 0;
+    background: transparent;
+  }
+  #playBtn {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 9999;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<button id="playBtn">🎵 음악 재생</button>
+<audio id="audio" preload="auto"></audio>
+
+<script>
+(function () {
+  const playlist = [
+    "https://leegno67.github.io/music/0K0507450119_128kbps.mp3",
+    "https://leegno67.github.io/music/14_-_jewel_lake.mp3"
+    // 필요하면 계속 추가
+  ];
+
+  let index = 0;
+  const audio = document.getElementById("audio");
+  const btn = document.getElementById("playBtn");
+
+  function playCurrent() {
+    audio.src = playlist[index];
+    audio.play().catch(() => {
+      // 모바일 autoplay 차단 대비
+      btn.style.display = "block";
+    });
+  }
+
+  audio.addEventListener("ended", function () {
+    index = (index + 1) % playlist.length;
+    playCurrent();
+  });
+
+  btn.addEventListener("click", function () {
+    btn.style.display = "none";
+    playCurrent();
+  });
+
+  // PC 자동재생 시도
+  playCurrent();
+})();
+</script>
+
+</body>
+</html>
